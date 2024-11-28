@@ -1,28 +1,29 @@
-name: CI - Testes com Jest
+name: CI/CD para Vercel
 
 on:
   push:
     branches:
-      - main  # Rodar sempre que houver um push na branch main
-  pull_request:
-    branches:
-      - main  # Rodar também em pull requests direcionados à branch main
+      - main
 
 jobs:
-  test:
-    runs-on: ubuntu-latest  # Executa no Ubuntu
+  deploy:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout código
         uses: actions/checkout@v2
 
-      - name: Configurar Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'  # Usando Node.js versão 14
-
+      # Instalar dependências antes de rodar os testes e deploy
       - name: Instalar dependências
-        run: npm install  # Instala as dependências do projeto
+        run: npm install
 
-      - name: Executar testes
-        run: npm test  # Executa os testes definidos no seu projeto (Jest)
+      # Rodar os testes com Jest
+      - name: Rodar testes Jest
+        run: npm test
+
+      # Deploy para o Vercel
+      - name: Deploy no Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          vercel --prod
