@@ -1,0 +1,28 @@
+name: CI - Testes com Jest
+
+on:
+  push:
+    branches:
+      - main  # Rodar sempre que houver um push na branch main
+  pull_request:
+    branches:
+      - main  # Rodar também em pull requests direcionados à branch main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # Executa no Ubuntu
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v2
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Usando Node.js versão 14
+
+      - name: Instalar dependências
+        run: npm install  # Instala as dependências do projeto
+
+      - name: Executar testes
+        run: npm test  # Executa os testes definidos no seu projeto (Jest)
